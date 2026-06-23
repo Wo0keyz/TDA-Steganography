@@ -110,6 +110,108 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-12 mt-4">
+                    <section class="image-visualizer" aria-labelledby="visualizerTitle">
+                      <div class="image-visualizer__header">
+                        <div>
+                          <p class="image-visualizer__eyebrow">How Encoding Works</p>
+                          <h4 id="visualizerTitle" class="mb-1">Secret bits written into pixels</h4>
+                          <p class="text-muted mb-0">
+                            The animation follows the real write order: left to right, top to bottom,
+                            red channel first, then green, then blue.
+                          </p>
+                        </div>
+                        <div class="image-visualizer__controls" role="group" aria-label="Animation controls">
+                          <button type="button" class="btn btn-outline-secondary btn-sm" id="stepBtn">Step</button>
+                          <button type="button" class="btn btn-primary btn-sm" id="playPauseBtn">Play</button>
+                          <button type="button" class="btn btn-outline-secondary btn-sm" id="resetBtn">Reset</button>
+                          <select class="form-select form-select-sm" id="speedSelect" aria-label="Animation speed">
+                            <option value="1">1x speed</option>
+                            <option value="2">2x speed</option>
+                            <option value="4">4x speed</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="image-visualizer__status">
+                        <span class="badge text-bg-light" id="vizStatus">Load an image and enter a message to animate.</span>
+                        <span class="image-visualizer__progress-label" id="vizProgressLabel">0 of 0 bits written</span>
+                      </div>
+
+                      <div class="image-visualizer__progress">
+                        <div class="image-visualizer__progress-bar" id="vizProgressBar"></div>
+                      </div>
+
+                      <div class="row g-3">
+                        <div class="col-12">
+                          <div class="viz-card">
+                            <div class="viz-card__header">
+                              <h5>Message bitstream</h5>
+                              <span id="bitstreamMeta">Demo message</span>
+                            </div>
+                            <div class="bitstream-ribbon" id="bitstreamRibbon" aria-live="polite"></div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-8">
+                          <div class="viz-card viz-card--grid">
+                            <div class="viz-card__header">
+                              <h5>Pixel write grid</h5>
+                              <span id="gridMeta">Sampled cover image</span>
+                            </div>
+                            <div class="pixel-grid" id="pixelGrid" aria-label="Pixel grid visualization"></div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                          <div class="viz-card">
+                            <div class="viz-card__header">
+                              <h5>Channel inspector</h5>
+                              <span id="inspectorChannel">Red channel</span>
+                            </div>
+                            <div class="channel-inspector">
+                              <div class="channel-inspector__values">
+                                <div>
+                                  <label>Original</label>
+                                  <code id="beforeBinary">10110110</code>
+                                </div>
+                                <div>
+                                  <label>Incoming bit</label>
+                                  <code id="incomingBit">0</code>
+                                </div>
+                                <div>
+                                  <label>Encoded</label>
+                                  <code id="afterBinary">10110110</code>
+                                </div>
+                              </div>
+                              <p class="channel-inspector__note" id="channelNote">
+                                Only the least-significant bit changes, so the visible image stays almost identical.
+                              </p>
+                              <div class="channel-inspector__stats" id="channelStats"></div>
+                            </div>
+                          </div>
+
+                          <div class="viz-card mt-3">
+                            <div class="viz-card__header">
+                              <h5>Original vs encoded crop</h5>
+                              <span id="compareMeta">Differences stay subtle</span>
+                            </div>
+                            <div class="compare-crops">
+                              <div>
+                                <label>Original</label>
+                                <canvas id="originalCropCanvas" width="160" height="160"></canvas>
+                              </div>
+                              <div>
+                                <label>Encoded</label>
+                                <canvas id="encodedCropCanvas" width="160" height="160"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
                 </div>
               </form>
             </div>
