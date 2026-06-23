@@ -148,20 +148,37 @@ def encode_text(cover: str, message: str) -> str:
         return bits
 
     binary_stream = encode_text_to_bits(message) + TEXT_STOP_BITS
+
+    def chunk_to_zwc(start: int) -> str:
+        zwc = ""
+        for i in range(0, 12, 2):
+            pair = binary_stream[start + i : start + i + 2]
+            zwc += ZWC_MAP[pair]
+        return zwc
+
     words = cover.split()
 
     out_words = []
     bit_index = 0
     for word in words:
-        if bit_index + 12 <= len(binary_stream):
-            zwc = ""
-            for i in range(0, 12, 2):
-                pair = binary_stream[bit_index + i : bit_index + i + 2]
-                zwc += ZWC_MAP[pair]
-            out_words.append(word + zwc)
+        if bit_index < len(binary_stream):
+            out_words.append(word + chunk_to_zwc(bit_index))
             bit_index += 12
         else:
             out_words.append(word)
+
+    # If the cover did not have enough words to carry the whole message, do
+    # not drop the remaining bits: append them (as zero-width characters) to
+    # the last word. The decoder reads zero-width bits globally, regardless of
+    # word boundaries, so this stays fully compatible.
+    if bit_index < len(binary_stream):
+        if not out_words:
+            out_words.append("")
+        tail = ""
+        while bit_index < len(binary_stream):
+            tail += chunk_to_zwc(bit_index)
+            bit_index += 12
+        out_words[-1] += tail
 
     return " ".join(out_words)
 
